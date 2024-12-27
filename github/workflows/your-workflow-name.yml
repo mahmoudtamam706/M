@@ -1,0 +1,33 @@
+name: Upload Files Automatically
+
+# Trigger the action on push or schedule
+on:
+  push:
+    branches:
+      - main
+  schedule:
+    - cron: '0 0 * * *' # This runs every day at midnight (optional)
+
+jobs:
+  upload-files:
+    runs-on: ubuntu-latest
+
+    steps:
+      # Step 1: Checkout the repository
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      # Step 2: Download files from URL (يمكنك استبدال الرابط بالرابط الخاص بك)
+      - name: Download files from URL
+        run: |
+          curl -L -o file.zip https://example.com/file.zip
+          unzip file.zip -d ./files/  # Unzip the file if it's a compressed file
+
+      # Step 3: Add, commit, and push the files
+      - name: Commit and push changes
+        run: |
+          git config --global user.email "your-email@example.com"
+          git config --global user.name "Your Name"
+          git add .
+          git commit -m "Add files from URL"
+          git push
