@@ -1,0 +1,33 @@
+name: Upload file from URL and unzip
+
+on:
+  push:
+    branches:
+      - main  # أو أي فرع ترغب في تفعيل الـ Workflow عليه
+  workflow_dispatch: # لتفعيل الـ Workflow يدويًا
+
+jobs:
+  download_and_upload:
+    runs-on: ubuntu-latest
+
+    steps:
+      # خطوة لعمل checkout للكود
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      # خطوة لتحميل الملف من الرابط
+      - name: Download file from URL
+        run: |
+          curl -L -o /tmp/your-file.zip https://opencartarab.com/a/4022
+
+      # خطوة لفك ضغط الملف
+      - name: Unzip the file
+        run: |
+          unzip /tmp/your-file.zip -d /tmp/extracted-files
+
+      # خطوة لرفع الملفات التي تم فك ضغطها إلى GitHub repository
+      - name: Upload extracted files to GitHub repository
+        uses: actions/upload-artifact@v2
+        with:
+          name: extracted-files
+          path: /tmp/extracted-files/
