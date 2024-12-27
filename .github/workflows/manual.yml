@@ -1,14 +1,14 @@
-name: Upload file from URL and unzip
+name: تحميل الملف من الرابط وفك الضغط
 
 on:
   push:
     branches:
-      - main  # أو أي فرع ترغب في تفعيل الـ Workflow عليه
+      - الرئيسي # أو أي فرع ترغب بتفعيل سير العمل عليه
   workflow_dispatch: # لتفعيل الـ Workflow يدويًا
 
 jobs:
-  download_and_upload:
-    runs-on: ubuntu-latest
+  download-and-upload:
+    runs-on: ubuntu-22.04 # تحديد إصدار Ubuntu الحالي (يمكن تغييره إلى ubuntu-24.04 لاحقًا)
 
     steps:
       # خطوة لعمل checkout للكود
@@ -21,13 +21,13 @@ jobs:
           curl -L -o /tmp/your-file.zip https://opencartarab.com/a/4022
 
       # خطوة لفك ضغط الملف
-      - name: Unzip the file
+      - name: Extract downloaded file
         run: |
           unzip /tmp/your-file.zip -d /tmp/extracted-files
 
-      # خطوة لرفع الملفات التي تم فك ضغطها إلى GitHub repository
-      - name: Upload extracted files to GitHub repository
-        uses: actions/upload-artifact@v2
+      # خطوة رفع الملفات التي تم فك ضغطها إلى مستودع GitHub
+      - name: Upload extracted files to GitHub
+        uses: actions/upload-artifact@v3
         with:
           name: extracted-files
           path: /tmp/extracted-files/
